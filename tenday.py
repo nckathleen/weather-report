@@ -8,25 +8,22 @@ my_secret_key = os.environ[WUNDERKEY]
 
 
 
-class SearchConditions:
+class SearchTenday:
 
     def __init__(self, q_string):
         self.q_string = q_string
 
     zipcode = input()
     def run(self):
-        url = 'http://api.wunderground.com/api/my_secret_key/conditions/q/{}.json'.format(
+        url = 'http://api.wunderground.com/api/my_secret_key/forecast10day/q/{}.json'.format(
             zipcode)
         res = requests.get(url).json
 
-        # album = res['albums'][0]['name']
-        # artist = res['albums'][0]['artists'][0]['name']
-
-        return conditions
+        return ten_day
 
 
 def main():
-    call = SearchConditions(zipcode)
+    call = SearchTenday(zipcode)
     res = call.run()
     print(res.text)
 
