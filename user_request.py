@@ -1,4 +1,4 @@
-from weather import SearchConditions
+from weather import SearchConditions, SearchAlerts
 import os
 
 my_secret_key = os.environ['WUNDERKEY']
@@ -17,3 +17,4 @@ zipcode = input("Please enter a zip code: ")
 
 
 SearchConditions(zipcode).run()
+SearchAlerts(zipcode).run()
