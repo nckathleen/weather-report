@@ -2,21 +2,29 @@ import os
 import requests
 
 
-my_secret_key = os.environ['WUNDERKEY']
+my_key = os.environ['WUNDERKEY']
 
 
-class SearchConditions:
+zipcode = input("Please enter a zip code: ")
 
-'''Look for current weather conditions for given zip-code.'''
+
+class SearchConditions():
+
+    '''Look for current weather conditions for given zip-code.'''
 
     def __init__(self, q_string):
         self.q_string = q_string
 
     def run(self):
-        url = 'http://api.wunderground.com/api/{key}/conditions/q/{zipcode}.json'.format(
-            zipcode=self.q_string, key=my_secret_key)
+        url = 'http://api.wunderground.com/api/{key}/conditions/q/{zipcode}.json'.format(key=my_key,
+            zipcode=self.q_string)
+        res = requests.get(url)
 
-        res = requests.get(url).json()
+        if res.status_code == 200:
+            with open('weather_stats.json', 'w') as f:
+                f.write(res.text)
+        else:
+            print(res.status_code)
 
         curr_place = res['current_observation']['display_location']['full']
         curr_weather = res['current_observation']['weather']
@@ -34,88 +42,76 @@ class SearchConditions:
         print ("")
 
         return res
-
-
 #
-# class SearchTenday:
+# class SearchTenDay:
 #
 #     def __init__(self, q_string):
 #         self.q_string = q_string
 #
 #     def run(self):
-#         url = 'http://api.wunderground.com/api/my_secret_key/forecast10day/q/{}.json'.format(
-#             zipcode)
-#         res = requests.get(url).json()
+#         url = 'http://api.wunderground.com/api/{key}/forecast10day/q/{zipcode}.json'.format(
+#             zipcode=self.q_string, key=my_key)
+#         res = requests.get(url)
 #
-#         curr_place = res['response']['current_observation']['display_location']['full']
-#         curr_weather = res['response']['current_observation']['weather']
-#         curr_temp = res['response']['current_observation']['temp_f']
+#         for day in res['forecast']['txt_forecast']['forecastday']:
+#             self.periods.append(day['fcttext'])
 #
-#         curr_time =
+#
+# class SearchAlerts():
+#
+#     ''' Look for any weather alerts for the given zip-code.'''
+#
+#     def __init__(self, q_string):
+#         self.q_string = q_string
+#
+#     def run(self):
+#         url = 'http://api.wunderground.com/api/{key}/alerts/q/{zipcode}.json'.format(
+#             zipcode=self.q_string, key=my_key)
+#         res = requests.get(url)
+#
+#
+#         if not res['alerts']:
+#             print("There are no current alerts for your area.")
+#         else:
+#             alert_type = res['alerts'][0]['description']
+#             alert_expire = res['alerts'][0]['expires']
+#             alert_msg = res['alerts'][0]['message']
+#             print("There is a {} for your area, which expires at {}.".format(alert_type, alert_expire))
+#             print(alert_msg)
+#
+#         return res
 
-
-class SearchAlerts:
-
-''' Look for any weather alerts for the given zip-code.'''
-
-    def __init__(self, q_string):
-        self.q_string = q_string
-
-    def run(self):
-        url = 'http://api.wunderground.com/api/my_secret_key/alerts/q/{zipcode}.json'.format(zipcode=self.q_string, key=my_secret_key)
-        res = requests.get(url).json
-
-        if not res['alerts']:
-            print("There are no current alerts for your area.")
-        else:
-            alert_type = res['alerts'][0]['description']
-            alert_expire = res['alerts'][0]['expires']
-            alert_msg = res['alerts'][0]['message']
-            print("There is a {} for your area, which expires at {}.".format(alert_type, alert_expire))
-            print(alert_msg)
-
-        return res
-
-
+#
 # class SearchHurricanes:
 #
 #     def __init__(self, q_string):
 #         self.q_string = q_string
 #
-#
 #     def run(self):
-#         url = 'http://api.wunderground.com/api/my_secret_key/currenthurricane/q/{zipcode}.json'.format(
-#             zipcode=self.q_string,, key=my_secret_key)
-#         res = requests.get(url).json
-#
-#         # album = res['albums'][0]['name']
-#         # artist = res['artists'][0]['name']
+#         url = 'http://api.wunderground.com/api/{key}/currenthurricane/q/{zipcode}.json'.format(
+#             zipcode=self.q_string, key=my_key)
+#         res = requests.get(url)
 #
 #         return hurricane
 
-
-class SearchSun:
-
-''' Give sunrise and sunset times for the given zip-code'''
-
-    def __init__(self, q_string):
-        self.q_string = q_string
-
-    zipcode = input()
-    def run(self):
-        url = 'http://api.wunderground.com/api/my_secret_key/astronomy/q/{}.json'.format(
-            zipcode=self.q_string)
-        res = requests.get(url).json
-
-        sunrise = res['sun_phase']['sunrise']['hour']
-        sunset = res['sun_phase']['sunset']['hour']
-
-        print("Today's sunrise is at {}.".format(sunrise))
-        print("Today's sunset is at {}.".format(sunset))
-
-        return res
-
-
 #
-# if __name__ == '__main__':
-#     main()
+# class SearchSun():
+#
+#     ''' Give sunrise and sunset times for the given zip-code'''
+#
+#     def __init__(self, q_string):
+#         self.q_string = q_string
+#
+#
+#     def run(self):
+#         url = 'http://api.wunderground.com/api/{key}/astronomy/q/{zipcode}.json'.format(
+#             zipcode=self.q_string, key=my_key)
+#         res = requests.get(url)
+#
+#         sunrise = res['sun_phase']['sunrise']['hour']
+#         sunset = res['sun_phase']['sunset']['hour']
+#
+#         print("Today sunrise is at {}.".format(sunrise))
+#         print("Today sunset is at {}.".format(sunset))
+#
+#         return res
