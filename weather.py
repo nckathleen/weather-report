@@ -5,10 +5,7 @@ import requests
 my_key = os.environ['WUNDERKEY']
 
 
-zipcode = input("Please enter a zip code: ")
-
-
-class SearchConditions():
+class SearchConditions:
 
     '''Look for current weather conditions for given zip-code.'''
 
@@ -16,15 +13,15 @@ class SearchConditions():
         self.q_string = q_string
 
     def run(self):
-        url = 'http://api.wunderground.com/api/{key}/conditions/q/{zipcode}.json'.format(key=my_key,
+        url = 'http://api.wunderground.com/api/{key}/conditions/q/{zipcode}.json'.format(
+            key=my_key,
             zipcode=self.q_string)
-        res = requests.get(url)
-
-        if res.status_code == 200:
-            with open('weather_stats.json', 'w') as f:
-                f.write(res.text)
-        else:
-            print(res.status_code)
+        res = requests.get(url).json()
+        # if res.status_code == 200:
+        #     with open('weather_stats.json', 'w') as f:
+        #         f.write(res.text)
+        # else:
+        #     print(res.status_code)
 
         curr_place = res['current_observation']['display_location']['full']
         curr_weather = res['current_observation']['weather']
