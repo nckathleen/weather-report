@@ -31,11 +31,12 @@ class SearchConditions:
         curr_wind = res['current_observation']['wind_mph']
         curr_time = res['current_observation']['observation_time']
 
+        print("")
         print(curr_time)
         print("In {} it is currently {} and {}°.".format(curr_place, curr_weather, curr_temp))
         print("The relative humidity is {}.".format(curr_humidity))
         print("Winds are at {} mph.".format(curr_wind))
-        print("With the humidity and wind, it actually feels like {}.".format(curr_feel))
+        print("With the humidity and wind, it actually feels like {}°.".format(curr_feel))
         print ("")
 
         return res
@@ -52,7 +53,7 @@ class SearchConditions:
 #
 #         for day in res['forecast']['txt_forecast']['forecastday']:
 #             self.periods.append(day['fcttext'])
-#
+# #
 #
 # class SearchAlerts():
 #
@@ -73,6 +74,8 @@ class SearchConditions:
 #             alert_type = res['alerts'][0]['description']
 #             alert_expire = res['alerts'][0]['expires']
 #             alert_msg = res['alerts'][0]['message']
+#
+#             print("")
 #             print("There is a {} for your area, which expires at {}.".format(alert_type, alert_expire))
 #             print(alert_msg)
 #
